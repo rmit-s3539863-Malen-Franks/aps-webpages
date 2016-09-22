@@ -10,6 +10,9 @@ if(!isset($_SESSION['login_user_bank']))
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+h4 {border: 2px solid gray; border-radius: 5px; padding: 20px 10px 20px 10px; margin-right: 1000px;}
+</style>
 <title>Account Details</title>
 </head>
 
@@ -33,7 +36,6 @@ if(!isset($_SESSION['login_user_bank']))
     ?> 
 
 <a href="logout.php">Logout</a>
-</div>
 </body>
 
 </html>
