@@ -7,12 +7,9 @@
 <body>
 <div id="section">
 <div id="banner">
-<div id="globalnav">
-<a href="shopindex.php">Home</a>  
-<a href="account.php">Account</a>
-<a href="shop.php">Shop</a>
-<a href="login.php">Login</a>
-<a href="/aps/index.php">Change Destination</a>
+<div id="globalnav">  
+<a href="shopindex.php">Shop</a>
+<a href="/aps-webpages/aps/index.php">Change Destination</a>
 
 </div>
 

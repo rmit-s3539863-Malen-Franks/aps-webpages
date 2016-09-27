@@ -13,7 +13,7 @@
 <li><a href="voucher.php">Vouchers</a></li>
 <li><a href="account.php">Account</a></li>
 <li><a href="login.php">Login</a></li>
-<li style="float:right"><a href="/aps/index.php">Change Destination</a></li> 
+<li style="float:right"><a href="/aps-webpages/aps/index.php">Change Destination</a></li> 
 </ul>
 </div>
 <img src="bank-logo.png" alt="Public Bank Logo" height="128" width="283">

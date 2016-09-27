@@ -2,6 +2,6 @@
 $host = 'localhost';
 $username = 'root';
 $password = '';
-$database = 'website';
+$database = 'marketplace';
 $dbconfigshop = mysqli_connect($host,$username,$password,$database);
 ?>
