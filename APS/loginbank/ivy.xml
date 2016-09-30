@@ -1,0 +1,8 @@
+<ivy-module version="2.0">
+    <info organisation="RMITProgProj-101" module="Anonymous Payment System" />
+    
+    <dependencies>
+        <dependency org="org.bouncycastle" name="bcprov-jdk15on" rev="1.55" />
+        <dependency org="mysql" name="mysql-connector-java" rev="5.1.39" />
+    </dependencies>
+</ivy-module>

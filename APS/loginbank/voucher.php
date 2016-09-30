@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Voucher</title>
+</head>
+
+<body>
+
 <?php 
 include("header.inc");
 include("dbconfigbank.php");
@@ -18,28 +26,41 @@ if(!isset($_SESSION['login_user_bank']))
     
     while($row=mysqli_fetch_array($results))
             {
-                    print "<h4>{$row['name']}, your current balance is: &#36;{$row['balance']}</h4>";
+                    print "<h4>{$row['acc_no']}, your current balance is: &#36;{$row['balance']}</h4>";
                 }
- ?> 
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST")
+{
+   if (!file_exists("GenerateVouchers.jar"))
+   {
+       // Install ivy if not present
+       shell_exec("ant ivy");
+       // Resolve dependencies into 'lib' directory if not present
+       shell_exec("ant resolve");
+       // Create GenerateVouchers.jar
+       shell_exec("ant GenerateVouchers-jar");
+   }
+
+   $acc_no = 123456; // Would presumably be in $_SESSION
+   $output = shell_exec("java -jar GenerateVouchers.jar " . $acc_no . " " . $_POST["num_vouchers"]);
+   // Do whatever you need to with $output
+   echo "<pre>";
+   echo $output;
+   echo "</pre>";
+}
+
+?>
 
 
 
 
-
-<!DOCTYPE html>
-<html>
-<head>
-<title>Voucher</title>
-</head>
-
-<body>
 
 <!-- start of form -->
  <div id="main-content">
-    <form method="post" action="****ADD HERE*****" enctype="multipart/form-data">
-        
-        Enter Voucher amount: <input type="text" name="balance" /><br>
-        <input type="submit" value="Purchase" />
+    <form method="post" action="">
+        <input type="number" name="num_vouchers" />
+        <input type="submit" value="Submit" />
     </form>
   </div>
  <!-- end of form -->
