@@ -10,7 +10,9 @@ session_start();
 <title>Shop</title>
 </head>
 <body>
-<h1>Welcome to the Shop</h1> 
+
+
+ <h1>Welcome to the Shop</h1> 
 
 <?php
 	
@@ -26,7 +28,30 @@ session_start();
                     print "<h4>Quantity: {$row['qty']}</h4>\n";
 
              }
-    ?> 
+
+
+$mysqli = new mysqli("localhost", "root", "", "user");
+$result = $mysqli->query("SELECT count(*) FROM vouchers");
+
+    /* determine number of rows result set */
+    $row = $result->num_rows;
+
+     $num = $row[0];
+     print_r($num);
+     echo $num;
+
+    /* close result set */
+    $result->close();
+
+
+?>
+
+ <div id="main-content">
+    <form method="post" action="">
+        <input type="submit" name="spend_vouchers value="Submit" />
+    </form>
+  </div> 
+
 
 </body>
 </html>

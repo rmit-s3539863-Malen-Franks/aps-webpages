@@ -26,9 +26,9 @@ if(!isset($_SESSION['login_user_bank']))
     
     while($row=mysqli_fetch_array($results))
             {
-                    print "<h4>{$row['acc_no']}, your current balance is: &#36;{$row['balance']}</h4>";
-                }
-
+                    print "<h4>Hi {$row['name']}, your current balance is: &#36;{$row['balance']}</h4>";
+                    $balance = $row['balance'];
+            }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
@@ -48,6 +48,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
    echo "<pre>";
    echo $output;
    echo "</pre>";
+
+$message = "You purchased " . $_POST["num_vouchers"] . " voucher/s. Your remaining balance is now $" . $balance;
+echo "<script type='text/javascript'>alert('$message');</script>";
 }
 
 ?>
