@@ -15,7 +15,6 @@ session_start();
  <h1>Welcome to the Shop</h1> 
 
 <?php
-	
     $db = mysqli_connect("localhost", "root","", "marketplace")  or die(mysqli_error($db));
     $q = "select * from products";
     $results = mysqli_query($db, $q) or die(mysqli_error($db));
@@ -28,30 +27,61 @@ session_start();
                     print "<h4>Quantity: {$row['qty']}</h4>\n";
 
              }
-
-
-$mysqli = new mysqli("localhost", "root", "", "user");
-$result = $mysqli->query("SELECT count(*) FROM vouchers");
-
-    /* determine number of rows result set */
-    $row = $result->num_rows;
-
-     $num = $row[0];
-     print_r($num);
-     echo $num;
-
-    /* close result set */
-    $result->close();
-
-
 ?>
 
  <div id="main-content">
     <form method="post" action="">
-        <input type="submit" name="spend_vouchers value="Submit" />
+        <input type="submit" name="spend_vouchers" value="Submit"/>
     </form>
   </div> 
-
+<?php /*Purchasing Button*/
+if(isset($_POST['spend_vouchers'])){
+	$mysqli = new mysqli("localhost", "root", "", "user");
+	$result = $mysqli->query("SELECT * FROM vouchers");
+    /* determine number of rows result set */
+	$num = $result->num_rows;
+	if($num!=null){
+		/*get the price*/
+		$db = mysqli_connect("localhost", "root","", "marketplace")  or die(mysqli_error($db));
+		$q = "select * from products";
+		$results = mysqli_query($db, $q) or die(mysqli_error($db));
+		
+		while($row=mysqli_fetch_array($results))
+            {
+				echo $row['prod_price'];
+			/*if we have multiple Item, need to write a different query*/
+               if($row['prod_price']>$num){
+				   echo "not enough funds!!!";
+			   }
+			   else{
+					while($each = mysqli_fetch_array($result)){
+						echo "{$each['voucher_id']}";
+						echo "|";
+						   if (!file_exists("VerifyVouchers.jar"))
+						   {
+							   // Install ivy if not present
+							   shell_exec("ant ivy");
+							   // Resolve dependencies into 'lib' directory if not present
+							   shell_exec("ant resolve");
+							   // Create VerifyVouchers.jar
+							   shell_exec("ant VerifyVouchers-jar");
+						   }
+						   $output = shell_exec("java -jar VerifyVouchers.jar ".$each['voucher_id']);
+						   // Do whatever you need to with $output
+						   echo "<pre>";
+						   echo $output;
+						   echo "</pre>";
+					}
+			   }
+            }
+	}
+	if($num == null){
+		echo "NOTHING";
+	}
+    /* close result set */
+    $result->close();
+}
+?>
 
 </body>
 </html>
