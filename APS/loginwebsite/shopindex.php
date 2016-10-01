@@ -45,19 +45,24 @@ if(isset($_POST['spend_vouchers'])){
 		$db = mysqli_connect("localhost", "root","", "marketplace")  or die(mysqli_error($db));
 		$q = "select * from products";
 		$results = mysqli_query($db, $q) or die(mysqli_error($db));
-		
+		$arg ="";
 		while($row=mysqli_fetch_array($results))
             {
-				echo $row['prod_price'];
+				/*echo $row['prod_price'];*/
 			/*if we have multiple Item, need to write a different query*/
                if($row['prod_price']>$num){
 				   echo "not enough funds!!!";
 			   }
 			   else{
 					while($each = mysqli_fetch_array($result)){
-						echo "{$each['voucher_id']}";
-						echo "|";
-						   if (!file_exists("VerifyVouchers.jar"))
+						/*echo "{$each['voucher_id']}";
+						echo "|";*/
+						$arg .= "{$each['voucher_id']} ";
+					}
+			   }
+            }
+		echo "checking argument {$arg}<br>";
+		if (!file_exists("VerifyVouchers.jar"))
 						   {
 							   // Install ivy if not present
 							   shell_exec("ant ivy");
@@ -66,17 +71,15 @@ if(isset($_POST['spend_vouchers'])){
 							   // Create VerifyVouchers.jar
 							   shell_exec("ant VerifyVouchers-jar");
 						   }
-						   $output = shell_exec("java -jar VerifyVouchers.jar ".$each['voucher_id']);
-						   // Do whatever you need to with $output
-						   echo "<pre>";
-						   echo $output;
-						   echo "</pre>";
-					}
-			   }
-            }
+		$output = shell_exec("java -jar VerifyVouchers.jar ".$arg);
+		// Do whatever you need to with $output
+		echo "<pre>";
+		echo $output;
+		echo "</pre>";
+						   
 	}
 	if($num == null){
-		echo "NOTHING";
+		echo "NO Voucher Found!!!</br>";
 	}
     /* close result set */
     $result->close();
