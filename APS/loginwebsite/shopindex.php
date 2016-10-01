@@ -1,7 +1,7 @@
 <?php 
-include("header.inc");
-include("dbconfigshop.php");
-session_start();
+    include("header.inc");
+    include("dbconfigshop.php");
+    session_start();
 ?>
 
 <!DOCTYPE html>
@@ -14,75 +14,69 @@ session_start();
 
  <h1>Welcome to the Shop</h1> 
 
+<div id="main-content">
 <?php
     $db = mysqli_connect("localhost", "root","", "marketplace")  or die(mysqli_error($db));
     $q = "select * from products";
     $results = mysqli_query($db, $q) or die(mysqli_error($db));
-    
+
     while($row=mysqli_fetch_array($results))
-            {
-                    print "<h4>Product Name: {$row['prod_name']}</h4>\n";
-                    print "<h4>Price: &#36;{$row['prod_price']}</h4>\n";
-                     print "<h4>Description: {$row['description']}</h4>\n";
-                    print "<h4>Quantity: {$row['qty']}</h4>\n";
+    {
+        echo '<form method="post" action="">' . "\n";
+        echo "<b>Product Name:</b> {$row['prod_name']}<br/>\n";
+        echo "<b>Price:</b> &#36;{$row['prod_price']}<br/>\n";
+        echo "<b>Description:</b> {$row['description']}<br/>\n";
+        echo "<b>Quantity:</b> {$row['qty']}<br/>\n";
+        echo '<input type="hidden" name="prod_price" value="'
+                . $row['prod_price'] . '" />' . "\n";
+        echo '<input type="submit" name="spend_vouchers" value="Submit" />'
+                . "\n";
+        echo '</form>' . "\n";
 
-             }
+    }
 ?>
-
- <div id="main-content">
-    <form method="post" action="">
-        <input type="submit" name="spend_vouchers" value="Submit"/>
-    </form>
-  </div> 
+</div> 
 <?php /*Purchasing Button*/
-if(isset($_POST['spend_vouchers'])){
-	$mysqli = new mysqli("localhost", "root", "", "user");
-	$result = $mysqli->query("SELECT * FROM vouchers");
-    /* determine number of rows result set */
-	$num = $result->num_rows;
-	if($num!=null){
-		/*get the price*/
-		$db = mysqli_connect("localhost", "root","", "marketplace")  or die(mysqli_error($db));
-		$q = "select * from products";
-		$results = mysqli_query($db, $q) or die(mysqli_error($db));
-		$arg ="";
-		while($row=mysqli_fetch_array($results))
-            {
-				/*echo $row['prod_price'];*/
-			/*if we have multiple Item, need to write a different query*/
-               if($row['prod_price']>$num){
-				   echo "not enough funds!!!";
-			   }
-			   else{
-					while($each = mysqli_fetch_array($result)){
-						/*echo "{$each['voucher_id']}";
-						echo "|";*/
-						$arg .= "{$each['voucher_id']} ";
-					}
-			   }
-            }
-		echo "checking argument {$arg}<br>";
-		if (!file_exists("VerifyVouchers.jar"))
-						   {
-							   // Install ivy if not present
-							   shell_exec("ant ivy");
-							   // Resolve dependencies into 'lib' directory if not present
-							   shell_exec("ant resolve");
-							   // Create VerifyVouchers.jar
-							   shell_exec("ant VerifyVouchers-jar");
-						   }
-		$output = shell_exec("java -jar VerifyVouchers.jar ".$arg);
-		// Do whatever you need to with $output
-		echo "<pre>";
-		echo $output;
-		echo "</pre>";
-						   
-	}
-	if($num == null){
-		echo "NO Voucher Found!!!</br>";
-	}
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    $price = $_POST['prod_price'];
+    
+    $user_db = new mysqli("localhost", "root", "", "user");
+
+    $vouchers_result = $user_db->query("select * from vouchers limit {$price}");
+
+    $arg = "";
+    if ($vouchers_result->num_rows == $price)
+    {
+        while ($voucher = mysqli_fetch_array($vouchers_result))
+        {
+            $arg .= $voucher['voucher_id']." ";
+        }
+        echo "Verifying vouchers: {$arg}<br>";
+        if (!file_exists("VerifyVouchers.jar"))
+        {
+           // Install ivy if not present
+           shell_exec("ant ivy");
+           // Resolve dependencies into 'lib' directory if not present
+           shell_exec("ant resolve");
+           // Create VerifyVouchers.jar
+           shell_exec("ant VerifyVouchers-jar");
+        }
+        $output = shell_exec("java -jar VerifyVouchers.jar ".$arg);
+        // Do whatever you need to with $output
+        echo "<pre>";
+        echo $output;
+        echo "</pre>";
+    }
+    else
+    {
+        echo "Insufficient vouchers to purchase requested item.";
+    }
+
     /* close result set */
-    $result->close();
+    $vouchers_result->close();
+    
+    // TODO Now deposit these vouchers into the vendors bank account
 }
 ?>
 
