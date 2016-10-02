@@ -19,7 +19,7 @@ if(!isset($_SESSION['login_user_bank']))
 
 
 <?php
-	
+	  set_time_limit(600);
     $db = mysqli_connect("localhost", "root","", "bank")  or die(mysqli_error($db));
     $q = "select * from bank_customers where acc_no='{$_SESSION['login_user_bank']}'";
     $results = mysqli_query($db, $q) or die(mysqli_error($db));
