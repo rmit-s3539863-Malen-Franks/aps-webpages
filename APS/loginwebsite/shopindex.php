@@ -67,6 +67,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         echo "<pre>";
         echo $output;
         echo "</pre>";
+
+        $message = "Depositing vouchers now";
+        echo "<script type='text/javascript'>alert('$message');</script>";
+        if (!file_exists("DepositVouchers.jar"))
+        {
+           // Install ivy if not present
+           shell_exec("ant ivy");
+           // Resolve dependencies into 'lib' directory if not present
+           shell_exec("ant resolve");
+           // Create DepositVouchers.jar
+           shell_exec("ant DepositVouchers-jar");
+        }
+        $acc_no = 78910;
+        $output = shell_exec("java -jar DepositVouchers.jar " . $acc_no . " " .$arg);
+        echo "<br>";
+        echo "<pre>";
+        echo $output;
+        echo "</pre>";
+
     }
     else
     {
@@ -77,6 +96,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     $vouchers_result->close();
     
     // TODO Now deposit these vouchers into the vendors bank account
+    
 }
 ?>
 
