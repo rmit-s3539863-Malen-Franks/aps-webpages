@@ -30,27 +30,27 @@ if(!isset($_SESSION['login_user_bank']))
                     $balance = $row['balance'];
             }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST")
-{
-   if (!file_exists("GenerateVouchers.jar"))
-   {
-       // Install ivy if not present
-       shell_exec("ant ivy");
-       // Resolve dependencies into 'lib' directory if not present
-       shell_exec("ant resolve");
-       // Create GenerateVouchers.jar
-       shell_exec("ant GenerateVouchers-jar");
-   }
+    if ($_SERVER["REQUEST_METHOD"] == "POST")
+    {
+       if (!file_exists("GenerateVouchers.jar"))
+       {
+           // Install ivy if not present
+           shell_exec("ant ivy");
+           // Resolve dependencies into 'lib' directory if not present
+           shell_exec("ant resolve");
+           // Create GenerateVouchers.jar
+           shell_exec("ant GenerateVouchers-jar");
+       }
 
-   $acc_no = 123456; // Would presumably be in $_SESSION
-   $output = shell_exec("java -jar GenerateVouchers.jar " . $acc_no . " " . $_POST["num_vouchers"]);
-   // Do whatever you need to with $output
-   echo "<pre>";
-   echo $output;
-   echo "</pre>";
+       $output = shell_exec("java -jar GenerateVouchers.jar " . $_SESSION['login_user_bank']. " " . $_POST["num_vouchers"]);
+       // Do whatever you need to with $output
+       echo "<pre>";
+       echo $output;
+       echo "</pre>";
 
-$message = "You purchased " . $_POST["num_vouchers"] . " voucher/s. Your remaining balance is now $" . $balance;
-echo "<script type='text/javascript'>alert('$message');</script>";
+    $row=mysqli_fetch_array($results);
+    $message = "You purchased " . $_POST["num_vouchers"] . " voucher/s. Your remaining balance is now $" . $balance;
+    echo "<script type='text/javascript'>alert('$message');</script>";
 }
 
 ?>
