@@ -44,11 +44,20 @@ if(!isset($_SESSION['login_user_bank']))
 
        $output = shell_exec("java -jar GenerateVouchers.jar " . $_SESSION['login_user_bank']. " " . $_POST["num_vouchers"]);
        // Do whatever you need to with $output
+       $db = mysqli_connect("localhost", "root","", "bank")  or die(mysqli_error($db));
+    $q = "select * from bank_customers where acc_no='{$_SESSION['login_user_bank']}'";
+    $results = mysqli_query($db, $q) or die(mysqli_error($db));
+    
+    while($row=mysqli_fetch_array($results))
+            {
+                    print "<h4>Hi {$row['name']}, your current balance is: &#36;{$row['balance']}</h4>";
+                    $balance = $row['balance'];
+            }
+            
        echo "<pre>";
        echo $output;
        echo "</pre>";
 
-    $row=mysqli_fetch_array($results);
     $message = "You purchased " . $_POST["num_vouchers"] . " voucher/s. Your remaining balance is now $" . $balance;
     echo "<script type='text/javascript'>alert('$message');</script>";
 }
