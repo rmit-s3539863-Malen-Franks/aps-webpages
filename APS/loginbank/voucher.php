@@ -19,47 +19,51 @@ if(!isset($_SESSION['login_user_bank']))
 
 
 <?php
-	  set_time_limit(600);
+	set_time_limit(600);
     $db = mysqli_connect("localhost", "root","", "bank")  or die(mysqli_error($db));
     $q = "select * from bank_customers where acc_no='{$_SESSION['login_user_bank']}'";
     $results = mysqli_query($db, $q) or die(mysqli_error($db));
     
-    while($row=mysqli_fetch_array($results))
-            {
-                    print "<h4>Hi {$row['name']}, your current balance is: &#36;{$row['balance']}</h4>";
-                    $balance = $row['balance'];
-            }
+
 
     if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
-       if (!file_exists("GenerateVouchers.jar"))
-       {
-           // Install ivy if not present
-           shell_exec("ant ivy");
-           // Resolve dependencies into 'lib' directory if not present
-           shell_exec("ant resolve");
-           // Create GenerateVouchers.jar
-           shell_exec("ant GenerateVouchers-jar");
-       }
+        if (!file_exists("GenerateVouchers.jar"))
+        {
+            // Install ivy if not present
+            shell_exec("ant ivy");
+            // Resolve dependencies into 'lib' directory if not present
+            shell_exec("ant resolve");
+            // Create GenerateVouchers.jar
+            shell_exec("ant GenerateVouchers-jar");
+        }
 
-       $output = shell_exec("java -jar GenerateVouchers.jar " . $_SESSION['login_user_bank']. " " . $_POST["num_vouchers"]);
-       // Do whatever you need to with $output
-       $db = mysqli_connect("localhost", "root","", "bank")  or die(mysqli_error($db));
-    $q = "select * from bank_customers where acc_no='{$_SESSION['login_user_bank']}'";
-    $results = mysqli_query($db, $q) or die(mysqli_error($db));
-    
-    while($row=mysqli_fetch_array($results))
-            {
-                    print "<h4>Hi {$row['name']}, your current balance is: &#36;{$row['balance']}</h4>";
-                    $balance = $row['balance'];
-            }
+        $output = shell_exec("java -jar GenerateVouchers.jar " . $_SESSION['login_user_bank']. " " . $_POST["num_vouchers"]);
+        // Do whatever you need to with $output
+        $db = mysqli_connect("localhost", "root","", "bank")  or die(mysqli_error($db));
+        $q = "select * from bank_customers where acc_no='{$_SESSION['login_user_bank']}'";
+        $results = mysqli_query($db, $q) or die(mysqli_error($db));
+        
+        while($row=mysqli_fetch_array($results))
+        {
+            print "<h4>Hi {$row['name']}, your current balance is: &#36;{$row['balance']}</h4>";
+            $balance = $row['balance'];
+        }
             
-       echo "<pre>";
-       echo $output;
-       echo "</pre>";
+        echo "<pre>";
+        echo $output;
+        echo "</pre>";
 
-    $message = "You purchased " . $_POST["num_vouchers"] . " voucher/s. Your remaining balance is now $" . $balance;
-    echo "<script type='text/javascript'>alert('$message');</script>";
+        $message = "You purchased " . $_POST["num_vouchers"] . " voucher/s. Your remaining balance is now $" . $balance;
+        echo "<script type='text/javascript'>alert('$message');</script>";
+    }
+    else
+    {
+        while($row=mysqli_fetch_array($results))
+        {
+            print "<h4>Hi {$row['name']}, your current balance is: &#36;{$row['balance']}</h4>";
+            $balance = $row['balance'];
+        }
 }
 
 ?>
