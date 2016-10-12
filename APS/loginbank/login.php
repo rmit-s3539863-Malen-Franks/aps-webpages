@@ -46,7 +46,7 @@ $error = "Username or Password is invalid";
 <h2>Login</h2>
     <form method="post" action="" name="loginform">
     <h4>Enter your login details<h4>
-    <input type="text" placeholder="Username" id="acc_no" name="acc_no" /><br>
+    <input type="text" placeholder="Account Number" id="acc_no" name="acc_no" /><br>
     <input type="password" placeholder="Password" id="password" name="password" /><br><br>
     <button type="submit">Login</button>
     <span><?php echo $error; ?></span>
