@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Voucher</title>
-</head>
-
-<body>
-
 <?php 
 include("header.inc");
 include("dbconfigbank.php");
@@ -16,6 +8,14 @@ if(!isset($_SESSION['login_user_bank']))
     }
 ?>
 
+
+
+<form method="post" action="">
+    <h2>Purchase Vouchers</h2>
+    <b>Enter number of vouchers</b><br>
+    <input type="number" name="num_vouchers" />
+    <input type="submit" value="Purchase" />
+</form>
 
 
 <?php
@@ -46,7 +46,7 @@ if(!isset($_SESSION['login_user_bank']))
         
         while($row=mysqli_fetch_array($results))
         {
-            print "<h4>Hi {$row['name']}, your current balance is: &#36;{$row['balance']}</h4>";
+            print "<h3>Your current balance is: &#36;{$row['balance']}</h3>";
             $balance = $row['balance'];
         }
             
@@ -61,30 +61,12 @@ if(!isset($_SESSION['login_user_bank']))
     {
         while($row=mysqli_fetch_array($results))
         {
-            print "<h4>Hi {$row['name']}, your current balance is: &#36;{$row['balance']}</h4>";
+            print "<h3>Your current balance is: &#36;{$row['balance']}</h3>";
             $balance = $row['balance'];
         }
 }
 
 ?>
-
-
-
-
-
-<!-- start of form -->
- <div id="main-content">
-    <form method="post" action="">
-        <input type="number" name="num_vouchers" />
-        <input type="submit" value="Submit" />
-    </form>
-  </div>
- <!-- end of form -->
-
-</body>
-</html>
-
-
  
  <?php 
     include("footer.inc");

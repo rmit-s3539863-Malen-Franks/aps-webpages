@@ -1,8 +1,8 @@
-<!-- start of footer -->
+		</div>
+		</div>
 	<div id="footer">
-        <div id="footertext">Public Bank Australia Limited &copy;. All Rights Reserved</div>
-    </div>
-</div>
-
+	<div class="left">Anonymous Payment System Project 2016</div>
+	<div class="clear"> </div>
+	</div>
 </body>
 </html>

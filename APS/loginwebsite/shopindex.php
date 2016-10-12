@@ -4,50 +4,31 @@
     session_start();
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-<title>Shop</title>
-<link rel="stylesheet" href="loginCss.css" />
-<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lobster" />
-</head>
-<body>
 
-
-<div align="centre"> <h1>Welcome to the Shop</h1> </div>
-
-<div id="main-content">
+<h1>Products</h1><br>
 
 <?php
     $db = mysqli_connect("localhost", "root","", "marketplace")  or die(mysqli_error($db));
     $q = "select * from products";
     $results = mysqli_query($db, $q) or die(mysqli_error($db));
-	echo "<div id='items_display'>";
-	while($row=mysqli_fetch_array($results))
-	{
-		echo"<table>";
-			echo"<tr>";
-				echo"<td><img src='/aps-webpages/APS/item.jpeg' style='width:304px;height:228px;'></td>";
-				echo"<td>";
-					echo"<table>";
-						echo '<form method="post" action="">' . "\n";
-						echo "<tr><td>Product Name</td><td>:\t{$row['prod_name']}</td></tr>\n";
-						echo "<tr><td>Price</td><td>:\t&#36;{$row['prod_price']}</td></tr>\n";
-						echo "<tr><td>Description</td><td>:\t{$row['description']}</td></tr>\n";
-						echo "<tr><td>Quantity</td><td>:\t{$row['qty']}</td></tr>\n";
-						echo '<input type="hidden" name="prod_price" value="'
-								. $row['prod_price'] . '" />' . "\n";
-						echo '<tr><td><input type="submit" name="spend_vouchers" value="Purchase" /></td></tr>'
-								. "\n";
-						echo '</form>' . "\n";
-					echo"</table>";
-				echo"</td>";
-			echo"</tr>";
-		echo"</table>";
-	}
-   echo"</div>";
+	 
+    while($row=mysqli_fetch_array($results))
+    {
+        echo '<form method="post" action="">' . "\n";
+        echo "<b>Product Name:</b> {$row['prod_name']}<br/>\n";
+        echo "<b>Price:</b> &#36;{$row['prod_price']}<br/>\n";
+        echo "<b>Description:</b> {$row['description']}<br/>\n";
+        echo "<b>Quantity:</b> {$row['qty']}<br/></br>\n";
+        echo '<input type="hidden" name="prod_price" value="'
+                . $row['prod_price'] . '" />' . "\n";
+        echo '<input type="submit" name="spend_vouchers" value="Purchase" />'
+                . "\n";
+        echo '</form>' . "\n";
+        echo "</br>";
+
+    }
 ?>
-</div> 
+
 <?php /*Purchasing Button*/
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
@@ -64,7 +45,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         {
             $arg .= $voucher['voucher_id']." ";
         }
-        echo "Verifying vouchers: {$arg}<br>";
+        echo "Verifying vouchers: {$arg}";
         if (!file_exists("VerifyVouchers.jar"))
         {
            // Install ivy if not present
@@ -82,8 +63,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
         if ($output == true)
                 {   
-                $message = "Depositing vouchers now";
-                echo "<script type='text/javascript'>alert('$message');</script>";
                 if (!file_exists("DepositVouchers.jar"))
                 {
                    // Install ivy if not present
@@ -118,9 +97,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 }
 ?>
 
-</body>
-</html>
 
 <?php 
     include("footer.inc");
  ?>
+

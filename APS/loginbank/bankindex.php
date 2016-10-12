@@ -4,15 +4,13 @@ include("dbconfigbank.php");
 session_start();
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-<title>Public Bank Home</title>
-</head>
-<body>
-<h1>Welcome to the Public Bank</h1> 
-</body>
-</html>
+
+<h2>Welcome to the Public Bank</h2> 
+<p><b>From this page you can do the following:</b><br>
+Log in to your account<br>
+Check your account balance<br>
+Purchase Vouchers</p>
+
 
 <?php 
     include("footer.inc");

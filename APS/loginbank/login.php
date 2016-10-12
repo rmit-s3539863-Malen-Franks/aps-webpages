@@ -42,19 +42,17 @@ $error = "Username or Password is invalid";
 
 <body>
 
-<div class="logo"></div>
-<div class="login-block">
-    <h1>Login</h1>
+
+<h2>Login</h2>
     <form method="post" action="" name="loginform">
-    <input type="text" placeholder="Username" id="acc_no" name="acc_no" />
-    <input type="password" placeholder="Password" id="password" name="password" />
-    <button type="submit">Submit</button>
+    <h4>Enter your login details<h4>
+    <input type="text" placeholder="Username" id="acc_no" name="acc_no" /><br>
+    <input type="password" placeholder="Password" id="password" name="password" /><br><br>
+    <button type="submit">Login</button>
     <span><?php echo $error; ?></span>
     </form>
-</div>
-</body>
 
-</html>
+
 
 <?php 
     include("footer.inc");
