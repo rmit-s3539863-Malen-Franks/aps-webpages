@@ -4,7 +4,7 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
+#*.jar -- Keep JAR files in repo for ease of setting up (no need to build Java code when synbcing for the first time)
 *.war
 *.ear
 
