@@ -18,8 +18,7 @@ CREATE TABLE bank_keys(
 );
 
 insert into bank_customers values
-(123456, 4000.00, 'Jeremy Leslie', SHA('jeremy'));
-insert into bank_customers values
+(123456, 4000.00, 'Jeremy Leslie', SHA('jeremy')),
 (987654, 0.00, 'Shop Vendor', SHA('shop1'));
 
 
@@ -55,6 +54,5 @@ CREATE TABLE products(
 );
 
 insert into products values
-(1, 'Apple', 2, 'Juicy red apple', 20);
-insert into products values
+(1, 'Apple', 2, 'Juicy red apple', 20),
 (2, 'Game of Thrones S01', 25, 'Season 1 of award-winning HBO hit Game of Thrones', 5);
