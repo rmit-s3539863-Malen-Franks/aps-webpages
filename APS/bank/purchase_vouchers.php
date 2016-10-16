@@ -31,22 +31,30 @@
     <h2>Purchase Vouchers</h2>
 
     <?php
-        if ($_SERVER["REQUEST_METHOD"] == "POST")
-        {
-            $generate_log = shell_exec("java -jar GenerateVouchers.jar {$_SESSION['login_user_bank']} {$_POST['num_vouchers']}");
+        $query = "select * from bank_customers where acc_no='{$_SESSION['login_user_bank']}'";
+        $results = $bank_db_conn->query($query);
+        $account = $results->fetch_array();
 
-            $query = "select * from bank_customers where acc_no='{$_SESSION['login_user_bank']}'";
-            $results = $bank_db_conn->query($query);
-            $account = $results->fetch_array();
-            
-            echo "<h3>You purchased {$_POST['num_vouchers']} voucher(s). Your remaining balance is now \${$account['balance']}</h3>";
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && $_POST['num_vouchers'] > 0)
+        {
+            if ($account['balance'] >= $_POST['num_vouchers'])
+            {
+                $generate_log = shell_exec("java -jar GenerateVouchers.jar {$_SESSION['login_user_bank']} {$_POST['num_vouchers']}");
+
+                $query = "select * from bank_customers where acc_no='{$_SESSION['login_user_bank']}'";
+                $results = $bank_db_conn->query($query);
+                $account = $results->fetch_array();
+                
+                echo "<h3>You purchased {$_POST['num_vouchers']} voucher(s). Your remaining balance is now \${$account['balance']}</h3>";
+            }
+            else
+            {
+                $error = "Insufficient funds for requested number of vouchers";
+                echo "<h3>Your current balance is \${$account['balance']}</h3>";
+            }
         }
         else
         {
-            $query = "select * from bank_customers where acc_no='{$_SESSION['login_user_bank']}'";
-            $results = $bank_db_conn->query($query);
-            $account = $results->fetch_array();
-
             echo "<h3>Your current balance is \${$account['balance']}</h3>";
         }
     ?>
@@ -56,6 +64,12 @@
         <input type="number" name="num_vouchers" />
         <input type="submit" value="Purchase" />
     </form>
+    <?php
+        if(isset($error))
+        {
+            echo "<span class='error'>{$error}</span>";
+        }
+    ?>
 
     <?php
         if (isset($generate_log))
