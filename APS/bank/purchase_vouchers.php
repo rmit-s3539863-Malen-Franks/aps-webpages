@@ -41,7 +41,6 @@
             {
                 $generate_log = shell_exec("java -jar GenerateVouchers.jar {$_SESSION['login_user_bank']} {$_POST['num_vouchers']}");
 
-                $query = "select * from bank_customers where acc_no='{$_SESSION['login_user_bank']}'";
                 $results = $bank_db_conn->query($query);
                 $account = $results->fetch_array();
                 
@@ -69,9 +68,7 @@
         {
             echo "<span class='error'>{$error}</span>";
         }
-    ?>
 
-    <?php
         if (isset($generate_log))
         {
             echo "<h3>Voucher Generation log:</h3>";

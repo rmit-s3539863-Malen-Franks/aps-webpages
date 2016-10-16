@@ -36,8 +36,6 @@
             }
             else
             {
-                $log_output = "";
-
                 $price = $user_db_conn->real_escape_string($_POST['prod_price']);
                 $total_cost = $price * $qty_req;
 
@@ -51,7 +49,7 @@
                         $voucher_ids[] = $voucher['voucher_id'];
                     }
 
-                    $log_output .= "<pre>Vouchers being spent:\n";
+                    $log_output = "<pre>Vouchers being spent:\n";
                     $log_output .= implode("\n", $voucher_ids);
                     $log_output .= "\n\n</pre>";
 
@@ -83,7 +81,7 @@
                 }
                 else
                 {
-                    $log_output .= "Insufficient vouchers to purchase requested item.";
+                    $error = "Insufficient vouchers to purchase requested item.";
                 }
             }
         }
@@ -124,6 +122,11 @@
         }
         echo "</table>";
 
+        if (isset($error))
+        {
+            echo "<br />";
+            echo "<span class='error'>{$error}</span>";
+        }
         if (isset($log_output))
         {
             echo "<br />";
